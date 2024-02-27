@@ -82,6 +82,18 @@ namespace AdaTech.PedraPapelTesoura.Test
             Assert.Equal(Forma.Tesoura, resultado);
         }
 
+        [Fact]
+        public void Deve_lancar_excecao_quando_forma_invalida_e_usada()
+        {
+            var jogada1 = (Forma)6;
+            var jogada2 = Forma.Papel;
+
+            var exception = Record.Exception(() => JogoService.Jogar(jogada1, jogada2));
+
+            Assert.NotNull(exception);
+            Assert.IsType<ArgumentException>(exception);
+        }
+
         [Theory]
         [InlineData(Forma.Pedra, Forma.Tesoura)]
         [InlineData(Forma.Papel, Forma.Pedra)]
@@ -91,6 +103,52 @@ namespace AdaTech.PedraPapelTesoura.Test
         [InlineData(Forma.Papel, Forma.Tesoura)]
 
         public void Nao_deve_dar_empate(Forma jogada1, Forma jogada2)
+        {
+            var resultado = JogoService.Jogar(jogada1, jogada2);
+
+            Assert.NotEqual(null, resultado);
+        }
+
+        [Theory]
+        [InlineData(Forma.Pedra, Forma.Lagarto)]
+        [InlineData(Forma.Lagarto, Forma.Spock)]
+        [InlineData(Forma.Spock, Forma.Tesoura)]
+        [InlineData(Forma.Tesoura, Forma.Lagarto)]
+        [InlineData(Forma.Lagarto, Forma.Papel)]
+        [InlineData(Forma.Papel, Forma.Spock)]
+        [InlineData(Forma.Spock, Forma.Pedra)]
+        public void Jogador_1_deve_vencer_com_novas_regras(Forma jogada1, Forma jogada2)
+        {
+            var resultado = JogoService.Jogar(jogada1, jogada2);
+
+            Assert.Equal(jogada1, resultado);
+        }
+
+        [Theory]
+        [InlineData(Forma.Lagarto, Forma.Pedra)]
+        [InlineData(Forma.Spock, Forma.Lagarto)]
+        [InlineData(Forma.Tesoura, Forma.Spock)]
+        [InlineData(Forma.Lagarto, Forma.Tesoura)]
+        [InlineData(Forma.Papel, Forma.Lagarto)]
+        [InlineData(Forma.Spock, Forma.Papel)]
+        [InlineData(Forma.Pedra, Forma.Spock)]
+        public void Jogador_2_deve_vencer_com_novas_regras(Forma jogada1, Forma jogada2)
+        {
+            var resultado = JogoService.Jogar(jogada1, jogada2);
+
+            Assert.Equal(jogada2, resultado);
+        }
+
+        [Theory]
+        [InlineData(Forma.Pedra, Forma.Papel)]
+        [InlineData(Forma.Papel, Forma.Tesoura)]
+        [InlineData(Forma.Tesoura, Forma.Pedra)]
+        [InlineData(Forma.Pedra, Forma.Spock)]
+        [InlineData(Forma.Papel, Forma.Lagarto)]
+        [InlineData(Forma.Tesoura, Forma.Spock)]
+        [InlineData(Forma.Lagarto, Forma.Pedra)]
+        [InlineData(Forma.Spock, Forma.Papel)]
+        public void Nao_deve_dar_empate_com_novas_regras(Forma jogada1, Forma jogada2)
         {
             var resultado = JogoService.Jogar(jogada1, jogada2);
 

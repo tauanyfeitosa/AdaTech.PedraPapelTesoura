@@ -1,28 +1,25 @@
 ﻿using AdaTech.PedraPapelTesoura.Library.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdaTech.PedraPapelTesoura.Library.Extensions
 {
     public static class FormaExtensions
     {
-        private static readonly Dictionary<Forma, Forma> regras = new Dictionary<Forma, Forma>
+        private static readonly Dictionary<Forma, List<Forma>> regras = new Dictionary<Forma, List<Forma>>
         {
-            { Forma.Pedra, Forma.Tesoura  }, // Pedra ganha de Tesoura
-            { Forma.Papel, Forma.Pedra  },   // Papel ganha de Pedra
-            { Forma.Tesoura,Forma.Papel  }  // Tesoura ganha de Papel
+            { Forma.Pedra, new List<Forma> { Forma.Tesoura, Forma.Lagarto } },
+            { Forma.Papel, new List<Forma> { Forma.Pedra, Forma.Spock } },
+            { Forma.Tesoura, new List<Forma> { Forma.Papel, Forma.Lagarto } },
+            { Forma.Lagarto, new List<Forma> { Forma.Spock, Forma.Papel } },
+            { Forma.Spock, new List<Forma> { Forma.Tesoura, Forma.Pedra } }
         };
 
         public static bool GanhaDe(this Forma jogada1, Forma jogada2)
         {
-            if (regras.TryGetValue(jogada1, out Forma vencedor))
+            if (regras.TryGetValue(jogada1, out List<Forma> vencedores))
             {
-                return vencedor == jogada2; // Retorna true se jogada1 ganha de jogada2
+                return vencedores.Contains(jogada2);
             }
-            return false; // Retorna false se jogada1 não ganha de jogada2 ou se a jogada não está mapeada
+            return false;
         }
     }
 }

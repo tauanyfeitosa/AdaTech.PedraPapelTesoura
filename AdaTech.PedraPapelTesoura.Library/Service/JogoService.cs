@@ -10,6 +10,11 @@ namespace AdaTech.PedraPapelTesoura.Library.Service
     {
         public static Forma? Jogar(Forma jogada1, Forma jogada2)
         {
+            if (!Enum.IsDefined(typeof(Forma), jogada1) || !Enum.IsDefined(typeof(Forma), jogada2))
+            {
+                throw new ArgumentException("Uma ou ambas as formas são inválidas.");
+            }
+
             if (jogada1 == jogada2)
                 return null;
 
