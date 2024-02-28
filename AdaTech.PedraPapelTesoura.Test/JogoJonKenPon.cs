@@ -85,7 +85,7 @@ namespace AdaTech.PedraPapelTesoura.Test
         [Fact]
         public void Deve_lancar_excecao_quando_forma_invalida_e_usada()
         {
-            var jogada1 = (Forma)6;
+            var jogada1 = (Forma)999;
             var jogada2 = Forma.Papel;
 
             var exception = Record.Exception(() => JogoService.Jogar(jogada1, jogada2));
